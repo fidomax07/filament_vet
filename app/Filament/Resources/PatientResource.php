@@ -26,39 +26,10 @@ class PatientResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-
-                Forms\Components\Select::make('type')
-                    ->options(PatientType::class)
-                    ->required(),
-
-                Forms\Components\DatePicker::make('date_of_birth')
-                    ->required()
-                    ->maxDate(now()),
-
-                Forms\Components\Select::make('owner_id')
-                    ->relationship('owner', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('email')
-                            ->label('Email address')
-                            ->email()
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('phone')
-                            ->label('Phone number')
-                            ->tel()
-                            ->required(),
-                    ])
-                    ->required(),
-
-
+                static::getNameFormField(),
+                static::getTypeFormField(),
+                static::getDateOfBirthFormField(),
+                static::getOwnerFormField(),
             ]);
     }
 
@@ -122,5 +93,49 @@ class PatientResource extends Resource
                 SoftDeletingScope::class,
             ])
             ->latest();
+    }
+
+    public static function getNameFormField(): Forms\Components\TextInput
+    {
+        return Forms\Components\TextInput::make('name')
+            ->required()
+            ->maxLength(255);
+    }
+
+    public static function getTypeFormField(): Forms\Components\Select
+    {
+        return Forms\Components\Select::make('type')
+            ->options(PatientType::class)
+            ->required();
+    }
+
+    public static function getDateOfBirthFormField(): Forms\Components\DatePicker
+    {
+        return Forms\Components\DatePicker::make('date_of_birth')
+            ->required()
+            ->maxDate(now());
+    }
+
+    public static function getOwnerFormField(): Forms\Components\Select
+    {
+        return Forms\Components\Select::make('owner_id')
+            ->relationship('owner', 'name')
+            ->searchable()
+            ->preload()
+            ->createOptionForm([
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('email')
+                    ->label('Email address')
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('phone')
+                    ->label('Phone number')
+                    ->tel()
+                    ->required(),
+            ])
+            ->required();
     }
 }
