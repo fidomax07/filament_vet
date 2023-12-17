@@ -59,6 +59,7 @@ class PatientResource extends Resource
                     ->options(PatientType::class),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
