@@ -17,6 +17,8 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Fidan Ademi',
             'email' => 'fidomax07@gmail.com',
+            'phone' => '+38349549692',
+            'date_of_birth' => '1992-01-15',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
         ]);

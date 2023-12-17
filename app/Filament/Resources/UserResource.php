@@ -2,15 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Infolists\Components\Section;
+use App\Filament\Resources\UserResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
@@ -34,12 +36,17 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Textarea::make('phone')
+                    ->maxLength(255),
+                Forms\Components\DatePicker::make('date_of_birth'),
                 Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->required()
                     ->maxLength(255)
                     ->visibleOn('create'),
+                Forms\Components\Checkbox::make('is_active')
+                    ->columnSpan(2),
             ]);
     }
 
@@ -56,9 +63,13 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('phone'),
+                Tables\Columns\TextColumn::make('date_of_birth')
+                    ->date(),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -71,6 +82,8 @@ class UserResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\IconColumn::make('is_active')
+                    ->boolean(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -85,6 +98,36 @@ class UserResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make('Basic Info')
+                    ->description("User's basic information")
+                    ->schema([
+                        Infolists\Components\TextEntry::make('name'),
+                        Infolists\Components\TextEntry::make('email'),
+                        Infolists\Components\TextEntry::make('phone'),
+                        Infolists\Components\TextEntry::make('date_of_birth')
+                            ->date(),
+                    ])
+                    ->columns(2),
+
+                Section::make('Timeline Info')
+                    ->schema([
+                        Infolists\Components\TextEntry::make('email_verified_at')
+                            ->dateTime(),
+                        Infolists\Components\TextEntry::make('created_at')
+                            ->dateTime(),
+                        Infolists\Components\TextEntry::make('updated_at')
+                            ->dateTime(),
+                        Infolists\Components\TextEntry::make('is_active')
+                            ->formatStateUsing(fn ($state) => $state == 1 ? 'Yes' : 'No'),
+                    ])
+                    ->columns(2),
             ]);
     }
 
