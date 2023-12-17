@@ -106,28 +106,42 @@ class UserResource extends Resource
         return $infolist
             ->schema([
                 Section::make('Basic Info')
+                    ->id('basic-info')
                     ->description("User's basic information")
+                    ->icon('heroicon-s-adjustments-horizontal')
                     ->schema([
-                        Infolists\Components\TextEntry::make('name'),
+                        Infolists\Components\TextEntry::make('name')
+                            ->url(function (User $user) {
+                                return route(
+                                    'filament.admin.resources.users.edit',
+                                    ['record' => $user->id]
+                                );
+                            })
+                            ->openUrlInNewTab(),
                         Infolists\Components\TextEntry::make('email'),
-                        Infolists\Components\TextEntry::make('phone'),
+                        Infolists\Components\TextEntry::make('phone')
+                            ->tooltip("User's personal phone number."),
                         Infolists\Components\TextEntry::make('date_of_birth')
                             ->date(),
                     ])
-                    ->columns(2),
+                    ->columns(2)
+                    ->collapsible(),
 
-                Section::make('Timeline Info')
+                Section::make('Metadata Info')
+                    ->id('metadata-info')
+                    ->icon('heroicon-s-document-chart-bar')
                     ->schema([
                         Infolists\Components\TextEntry::make('email_verified_at')
                             ->dateTime(),
+                        Infolists\Components\IconEntry::make('is_active')
+                            ->boolean(),
                         Infolists\Components\TextEntry::make('created_at')
                             ->dateTime(),
                         Infolists\Components\TextEntry::make('updated_at')
                             ->dateTime(),
-                        Infolists\Components\TextEntry::make('is_active')
-                            ->formatStateUsing(fn ($state) => $state == 1 ? 'Yes' : 'No'),
                     ])
-                    ->columns(2),
+                    ->columns(2)
+                    ->collapsible(),
             ]);
     }
 
