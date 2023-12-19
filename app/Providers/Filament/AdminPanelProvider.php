@@ -54,5 +54,8 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ]);
+            // Below SPA configuration doesn't seem to currently work, will try again at some
+            // later time, to see if the JS error is fixed and this is working as expected.
+            //->spa();
     }
 }
