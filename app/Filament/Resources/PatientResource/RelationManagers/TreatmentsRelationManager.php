@@ -41,7 +41,8 @@ class TreatmentsRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('description')
                     // Adding notes of the treatment as additional description.
-                    ->description(fn (Treatment $t): ?string => $t->notes),
+                    ->description(fn (Treatment $t): ?string => $t->notes)
+                    ->words(3),
                 Tables\Columns\TextColumn::make('price')
                     ->money('EUR')
                     ->sortable(),
@@ -69,6 +70,16 @@ class TreatmentsRelationManager extends RelationManager
             ])
             ->modifyQueryUsing(fn (Builder $query) => $query->withoutGlobalScopes([
                 SoftDeletingScope::class,
-            ]));
+            ])->latest());
+    }
+
+    /**
+     * Check if the object is read-only.
+     *
+     * @return bool True if the object is read-only, false otherwise.
+     */
+    public function isReadOnly(): bool
+    {
+        return false;
     }
 }
