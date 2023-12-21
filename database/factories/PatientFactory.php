@@ -22,6 +22,8 @@ class PatientFactory extends Factory
             'name' => $this->faker->firstName,
             'owner_id' => Owner::inRandomOrder()->first() ?? Owner::factory(),
             'type' => $this->faker->randomElement(PatientType::values()),
+            'is_approved' => $approved = $this->faker->randomElement([false, true]),
+            'approved_at' => $approved ? Carbon::now() : null,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];
