@@ -14,8 +14,8 @@ class TreatmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'description' => $this->faker->text(),
-            'notes' => $this->faker->word(),
+            'description' => $this->faker->realText(20),
+            'notes' => $this->faker->realText(15),
             'patient_id' => Patient::inRandomOrder()->first() ?? Patient::factory(),
             'price' => $this->faker->randomNumber(5),
             'created_at' => Carbon::now()
