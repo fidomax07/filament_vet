@@ -15,18 +15,19 @@ class CreatePatient extends CreateRecord
     protected function getSteps(): array
     {
         return [
-            Step::make('Name & Birthdate')
+            Step::make('Basic information')
                 ->description('Name and birthdate of the patient')
                 ->schema([
                     PatientResource::getNameFormField(),
                     PatientResource::getDateOfBirthFormField(),
                 ]),
 
-            Step::make('Type & Owner info')
-                ->description('Patient type and owner information')
+            Step::make('Structural information')
+                ->description('Structural data of the patient')
                 ->schema([
                     PatientResource::getTypeFormField(),
                     PatientResource::getOwnerFormField(),
+                    PatientResource::getIsApprovedField(),
                 ])
         ];
     }

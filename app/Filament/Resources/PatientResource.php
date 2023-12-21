@@ -3,8 +3,8 @@
 namespace App\Filament\Resources;
 
 use Filament\Tables;
-use App\Models\Patient;
 use Filament\Forms;
+use App\Models\Patient;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Enums\PatientType;
@@ -30,6 +30,7 @@ class PatientResource extends Resource
                 static::getTypeFormField(),
                 static::getDateOfBirthFormField(),
                 static::getOwnerFormField(),
+                static::getIsApprovedField(),
             ]);
     }
 
@@ -52,6 +53,9 @@ class PatientResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('owner.name')
                     ->searchable(),
+                Tables\Columns\IconColumn::make('is_approved')
+                    ->boolean()
+                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -139,5 +143,10 @@ class PatientResource extends Resource
                     ->required(),
             ])
             ->required();
+    }
+
+    public static function getIsApprovedField(): Forms\Components\Checkbox
+    {
+        return Forms\Components\Checkbox::make('is_approved');
     }
 }
