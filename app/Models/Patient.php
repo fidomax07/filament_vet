@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PatientType;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -17,6 +18,8 @@ class Patient extends Model
 
     protected $casts = [
         'type' => PatientType::class,
+        'approved_at' => 'datetime',
+        'is_approved' => 'boolean',
     ];
 
 
@@ -41,5 +44,13 @@ class Patient extends Model
     public function scopeOfType(Builder $query, PatientType $type): void
     {
         $query->where('type', $type);
+    }
+
+    public function approve(): void
+    {
+        $this->update([
+           'is_approved' => true,
+           'approved_at' => $this->freshTimestamp(),
+        ]);
     }
 }

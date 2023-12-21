@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('owner_id')->constrained('owners')->cascadeOnDelete();
             $table->string('type');
+            $table->boolean('is_approved')->default(false);
+            $table->timestamp('approved_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
