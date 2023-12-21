@@ -2,18 +2,22 @@
 
 namespace App\Filament\Resources\PatientResource\RelationManagers;
 
+use App\Models\Patient;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use App\Models\Treatment;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\RelationManagers\RelationManager;
 
 class TreatmentsRelationManager extends RelationManager
 {
     protected static string $relationship = 'treatments';
+
+    protected static ?string $title = 'Patient\'s treatments';
 
     public function form(Form $form): Form
     {
@@ -68,9 +72,11 @@ class TreatmentsRelationManager extends RelationManager
                     Tables\Actions\ForceDeleteBulkAction::make(),
                 ]),
             ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ])->latest());
+            ->modifyQueryUsing(function (Builder $query) {
+                $query
+                    ->withoutGlobalScopes([SoftDeletingScope::class])
+                    ->latest();
+            });
     }
 
     /**
@@ -81,5 +87,17 @@ class TreatmentsRelationManager extends RelationManager
     public function isReadOnly(): bool
     {
         return false;
+    }
+
+    /**
+     * @param Model|Patient $ownerRecord
+     * @param string $pageClass
+     * @return bool
+     *
+     * @noinspection PhpDocSignatureInspection
+     */
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        return $ownerRecord->is_approved;
     }
 }
