@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PatientType;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -21,6 +21,16 @@ class Patient extends Model
         'approved_at' => 'datetime',
         'is_approved' => 'boolean',
     ];
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::saving(function (Patient $patient) {
+            $patient->approved_at = $patient->is_approved ? Date::now() : null;
+        });
+    }
 
 
     public function owner(): BelongsTo
