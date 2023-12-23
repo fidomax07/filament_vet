@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\PatientResource\Pages;
 
-use App\Filament\Resources\PatientResource;
 use Filament\Actions;
+use App\Filament\Resources\PatientResource;
 use Filament\Resources\Pages\ListRecords;
 
 class ListPatients extends ListRecords
@@ -14,6 +14,24 @@ class ListPatients extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+        ];
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            PatientResource\Widgets\PatientOverview::make([
+                'orderBy' => 'max'
+            ]),
+        ];
+    }
+
+    protected function getFooterWidgets(): array
+    {
+        return [
+            PatientResource\Widgets\PatientOverview::make([
+                'orderBy' => 'min'
+            ]),
         ];
     }
 }

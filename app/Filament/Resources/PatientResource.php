@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Tables;
 use Filament\Forms;
+use Filament\Tables;
 use App\Models\Patient;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PatientResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PatientResource\RelationManagers;
+use App\Filament\Resources\PatientResource\Widgets\PatientOverview;
 
 class PatientResource extends Resource
 {
@@ -45,10 +46,10 @@ class PatientResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type'),
-                    // Note:
-                    // Below transformation would've been necessary if we would not implement
-                    // `Filament\Support\Contracts\HasLabel` interface in our `type` enum.
-                    //->formatStateUsing(fn(PatientType $state): string => $state->name),
+                // Note:
+                // Below transformation would've been necessary if we would not implement
+                // `Filament\Support\Contracts\HasLabel` interface in our `type` enum.
+                //->formatStateUsing(fn(PatientType $state): string => $state->name),
                 Tables\Columns\TextColumn::make('date_of_birth')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('owner.name')
@@ -100,6 +101,15 @@ class PatientResource extends Resource
             ])
             ->latest();
     }
+
+    public static function getWidgets(): array
+    {
+        return [
+            PatientOverview::class,
+        ];
+    }
+
+
 
     public static function getNameFormField(): Forms\Components\TextInput
     {
