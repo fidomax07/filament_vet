@@ -11,6 +11,7 @@ use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\GlobalSearch\Actions\Action;
 use Filament\Infolists\Components\Section;
 use App\Filament\Resources\UserResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -168,5 +169,26 @@ class UserResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    /**
+     * @param User $record
+     *
+     * @return array|string[]
+     */
+    public static function getGlobalSearchResultDetails($record): array
+    {
+        return [
+            'User ID' => "#$record->id",
+            'Email' => $record->email,
+        ];
+    }
+
+    public static function getGlobalSearchResultActions($record): array
+    {
+        return [
+            Action::make('View')
+                ->url(static::getUrl('view', ['record' => $record]), shouldOpenInNewTab: true),
+        ];
     }
 }
