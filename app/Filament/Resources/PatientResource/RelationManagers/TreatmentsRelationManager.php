@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\RelationManagers\RelationManager;
+use App\Filament\Resources\PatientResource\Pages\EditPatient;
 
 class TreatmentsRelationManager extends RelationManager
 {
@@ -59,7 +60,7 @@ class TreatmentsRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
                 Tables\Actions\Action::make('Edit owning patient')
-                    ->url('/admin/patients/' . $this->getOwnerRecord()->id . '/edit'),
+                    ->url(EditPatient::getUrl(['record' => $this->getOwnerRecord()->id])),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
