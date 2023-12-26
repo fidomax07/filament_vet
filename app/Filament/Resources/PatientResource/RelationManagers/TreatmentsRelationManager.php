@@ -58,6 +58,8 @@ class TreatmentsRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
+                Tables\Actions\Action::make('Edit owning patient')
+                    ->url('/admin/patients/' . $this->getOwnerRecord()->id . '/edit'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
