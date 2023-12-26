@@ -10,6 +10,8 @@ class ListPatients extends ListRecords
 {
     protected static string $resource = PatientResource::class;
 
+    protected ?string $subheading = 'List of all patients';
+
     protected function getHeaderActions(): array
     {
         return [
