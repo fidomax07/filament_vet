@@ -128,6 +128,7 @@ class PatientResource extends Resource
     public static function getDateOfBirthFormField(): Forms\Components\DatePicker
     {
         return Forms\Components\DatePicker::make('date_of_birth')
+            ->native(false)
             ->required()
             ->maxDate(now());
     }

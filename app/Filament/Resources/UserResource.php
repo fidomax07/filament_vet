@@ -33,19 +33,25 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255),
+
                 Forms\Components\Textarea::make('phone')
                     ->maxLength(255),
+
                 Forms\Components\DatePicker::make('date_of_birth'),
+
                 Forms\Components\DateTimePicker::make('email_verified_at'),
+
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->required()
                     ->maxLength(255)
                     ->visibleOn('create'),
+
                 Forms\Components\Checkbox::make('is_active')
                     ->columnSpan(2),
             ]);
@@ -112,9 +118,10 @@ class UserResource extends Resource
                     ->icon('heroicon-s-adjustments-horizontal')
                     ->schema([
                         Infolists\Components\TextEntry::make('name')
+                            ->label('Full name')
                             ->url(function (User $user) {
                                 return route(
-                                    'filament.admin.resources.users.edit',
+                                    'filament.app.resources.users.edit',
                                     ['record' => $user->id]
                                 );
                             })
