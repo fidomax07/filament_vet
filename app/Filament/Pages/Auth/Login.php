@@ -13,7 +13,7 @@ class Login extends BaseLogin
             ->schema([
                 $this->getEmailFormComponent()->default('fidomax07@gmail.com'),
                 $this->getPasswordFormComponent()->default('password'),
-                $this->getRememberFormComponent(),
+                $this->getRememberFormComponent()->default(true),
             ]);
     }
 }
