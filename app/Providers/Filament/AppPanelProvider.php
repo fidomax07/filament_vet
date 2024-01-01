@@ -7,6 +7,7 @@ use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use App\Filament\Pages\Auth\Login;
 use Illuminate\Support\Facades\Blade;
 use App\Filament\Pages\Auth\EditProfile;
 use Filament\Http\Middleware\Authenticate;
@@ -29,7 +30,7 @@ class AppPanelProvider extends PanelProvider
             ->default()
             ->id('app')
             ->path('')
-            ->login()
+            ->login(Login::class)
             ->profile(EditProfile::class)
             ->colors([
                 'primary' => Color::Indigo,
