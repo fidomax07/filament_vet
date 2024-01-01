@@ -39,6 +39,9 @@ class TreatmentsRelationManager extends RelationManager
             ]);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function table(Table $table): Table
     {
         return $table
@@ -60,7 +63,7 @@ class TreatmentsRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
                 Tables\Actions\Action::make('Edit owning patient')
-                    ->url(EditPatient::getUrl(['record' => $this->getOwnerRecord()->id])),
+                    ->url(EditPatient::getUrl(['record' => $this->getOwnerRecord()])),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -121,6 +121,7 @@ class PatientResource extends Resource
     public static function getTypeFormField(): Forms\Components\Select
     {
         return Forms\Components\Select::make('type')
+            ->enum(PatientType::class)
             ->options(PatientType::class)
             ->required();
     }
