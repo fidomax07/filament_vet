@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -55,17 +54,6 @@ class UserResource extends Resource
 
                 Forms\Components\Checkbox::make('is_active')
                     ->columnSpan(2),
-
-                FileUpload::make('images')
-                    ->label('Photos')
-                    ->helperText('Maximum of 3 images')
-                    ->disk('local')
-                    ->preserveFilenames()
-                    ->maxSize(10 * 1024)
-                    ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                    ->multiple()
-                    ->maxFiles(3)
-                    ->columnSpan('full'),
             ]);
     }
 
@@ -77,7 +65,7 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->formatStateUsing(fn(string $state): string => "#$state"),
+                    ->formatStateUsing(fn (string $state): string => "#$state"),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
